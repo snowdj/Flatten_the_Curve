@@ -186,6 +186,8 @@ run <- function(sdp, red) {
 
 
 ui <- fluidPage(
+    
+    tags$head(tags$link(rel="shortcut icon", href="favicon.ico")),
 
     titlePanel("Flatten the Curve"),
     
