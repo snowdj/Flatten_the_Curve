@@ -217,7 +217,7 @@ ui <- fluidPage(
                         "Reduction during second period (red 2)",
                         min = 0.4,
                         max = 0.9,
-                        value = 0.6, 
+                        value = 0.8, 
                         step = 0.1), 
             br(),
             hr(),            
