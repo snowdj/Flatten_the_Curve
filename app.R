@@ -220,15 +220,17 @@ ui <- fluidPage(
             br(),
             br(),
             hr(),            
-            tags$small("Tinu Schneider, Thun, 2020-03-17"),
-            p("LINK to GitHub")
+            tags$small("Code on Github:"),
+            br(),
+            tags$a(href="https://github.com/tinu-schneider/Flatten_the_Curve", 
+                   "github.com/tinu-schneider/Flatten_the_Curve")
         ),
 
         mainPanel(
            plotOutput("chart", height = "500px"), 
            br(),
            hr(),
-           p("Initial code, mathematical model and idea:"),
+           h4("Initial code, mathematical model and idea:"),
            tags$a(href="https://staff.math.su.se/hoehle/blog/2020/03/16/flatteningthecurve.html", 
                   "Michael Höhle, 'Flatten the COVID-19 curve'") 
         )
@@ -238,8 +240,9 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
-    output$chart <- renderPlot({run(sdp = c(input$sdp.one, input$sdp.two), 
-                                    red = c(input$red.one, input$red.two))
+    output$chart <- renderPlot({
+        run(sdp = c(input$sdp.one, input$sdp.two), 
+            red = c(input$red.one, input$red.two))
     })
 }
 
