@@ -218,16 +218,22 @@ ui <- fluidPage(
                         value = 0.6, 
                         step = 0.1), 
             br(),
-            br(),
             hr(),            
             tags$small("Code on Github:"),
             br(),
             tags$a(href="https://github.com/tinu-schneider/Flatten_the_Curve", 
-                   "github.com/tinu-schneider/Flatten_the_Curve")
+                   "github.com/tinu-schneider/Flatten_the_Curve"),
+            br(), br(),
+            tags$div("This work is licensed under a "),
+            tags$a(href="http://creativecommons.org/licenses/by-sa/4.0/)", 
+                   "Creative Commons Attribution-ShareAlike 4.0 International License"), 
+            br(),
+            img(src="license.png"),
+            br()
         ),
 
         mainPanel(
-           plotOutput("chart", height = "500px"), 
+           plotOutput("chart", height = "525px"), 
            br(),
            hr(),
            h4("Initial code, mathematical model and idea:"),
