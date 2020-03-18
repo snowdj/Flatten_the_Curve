@@ -1,7 +1,7 @@
 
 
 library(shiny)
-
+library(gridExtra)
 library(tidyverse)
 library(deSolve)
 
@@ -93,7 +93,7 @@ if (!exists("ode_solution_daily")) {
     ode_solution_daily <- solve_ode(
         sdp = c(0, max_time),     # social_dist_period
         red = c(0.9999, 0.9999),  # reduction
-        typ = "without_intervention"
+        typ = "without intervention"
     )
 }
 
@@ -104,7 +104,7 @@ run <- function(sdp, red) {
     ode_solution2_daily <- solve_ode(
         sdp = sdp,
         red = red,
-        typ = "with_intervention"
+        typ = "with intervention"
     )
     
     # Combine the two solutions into one dataset
@@ -114,8 +114,9 @@ run <- function(sdp, red) {
     final_sizes <- ode_df %>%
             group_by(type) %>%
             filter(row_number() == n()) %>%
-            mutate(final_fraction = scales::percent(1 - s, accuracy = 1)) %>%
-            select(type, final_fraction) 
+            mutate("final fraction" = scales::percent(1 - s, accuracy = 1)) %>%
+            select("final fraction", type) %>% 
+            arrange(desc(type))
     
     # Plot
     pp <- ggplot(ode_df, 
@@ -139,7 +140,10 @@ run <- function(sdp, red) {
             axis.ticks = element_blank(),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank()) +
-        scale_color_brewer(name = "Epidemic model:", type = "qual", palette = 1) +
+        scale_color_brewer(name = "Epidemic model", 
+                           type = "qual", 
+                           palette = 1, 
+                           guide = guide_legend(reverse = TRUE)) +
         # sdp text
         geom_vline(xintercept = sdp, lty = 2, color = "darkgray") +
         geom_text(aes(x = sdp[1], 
@@ -180,7 +184,7 @@ run <- function(sdp, red) {
         ),
         size = 0.5, 
         color = "brown4",
-        arrow = arrow(length = unit(2, "mm"))) # +
+        arrow = arrow(length = unit(2, "mm")))  +
         # capacity; removed
         # geom_hline(yintercept = 0.02, lty = 3, color = "steelblue", size = 0.5) +
         # geom_text(aes(x = 120, 
@@ -188,6 +192,20 @@ run <- function(sdp, red) {
         #               label = "Healthcare system capacity"),
         #           color ="steelblue", 
         #           size = 3.5)
+        #
+        # Add final size as table
+        annotation_custom(tableGrob(final_sizes, 
+                                    rows = NULL,
+                                    theme = ttheme_minimal(
+                                        core    = list(fg_params = list(hjust = 0, x = 0.1)),
+                                        rowhead = list(fg_params = list(hjust = 0, x = 0))
+                                    )),
+                          xmin = 100,
+                          xmax = 150,
+                          ymin = 0.037,
+                          ymax = 0.045
+                          )
+    
     print(pp)
 }
 
