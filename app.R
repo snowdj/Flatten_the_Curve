@@ -110,6 +110,13 @@ run <- function(sdp, red) {
     # Combine the two solutions into one dataset
     ode_df <- rbind(ode_solution_daily, ode_solution2_daily)
     
+    # The final size in the two cases:
+    final_sizes <- ode_df %>%
+            group_by(type) %>%
+            filter(row_number() == n()) %>%
+            mutate(final_fraction = scales::percent(1 - s, accuracy = 1)) %>%
+            select(type, final_fraction) 
+    
     # Plot
     pp <- ggplot(ode_df, 
                  aes(x = t, 
@@ -173,14 +180,14 @@ run <- function(sdp, red) {
         ),
         size = 0.5, 
         color = "brown4",
-        arrow = arrow(length = unit(2, "mm"))) +
-        # capacity
-        geom_hline(yintercept = 0.02, lty = 3, color = "steelblue", size = 0.5) +
-        geom_text(aes(x = 120, 
-                      y = 0.021, 
-                      label = "Healthcare system capacity"),
-                  color ="steelblue", 
-                  size = 3.5)
+        arrow = arrow(length = unit(2, "mm"))) # +
+        # capacity; removed
+        # geom_hline(yintercept = 0.02, lty = 3, color = "steelblue", size = 0.5) +
+        # geom_text(aes(x = 120, 
+        #               y = 0.021, 
+        #               label = "Healthcare system capacity"),
+        #           color ="steelblue", 
+        #           size = 3.5)
     print(pp)
 }
 
@@ -199,29 +206,29 @@ ui <- fluidPage(
                         min   =  0,
                         max   = 50,
                         value = 30, 
-                        step  = 10), 
+                        step  =  5), 
             sliderInput("red.one",
                         "Reduction during first period (red 1)",
-                        min = 0.4,
-                        max = 0.9,
+                        min   = 0.4,
+                        max   = 1.0,
                         value = 0.6, 
-                        step = 0.1), 
+                        step  = 0.05), 
             br(), br(),
             sliderInput("sdp.two",
                         "Start of second 'social distance period' (sdp 2)",
                         min   =  50,
                         max   = 100,
                         value =  60, 
-                        step  =  10), 
+                        step  =   5), 
             sliderInput("red.two",
                         "Reduction during second period (red 2)",
-                        min = 0.4,
-                        max = 0.9,
+                        min   = 0.4,
+                        max   = 1.0,
                         value = 0.8, 
-                        step = 0.1), 
+                        step  = 0.05), 
             br(),
             hr(),            
-            tags$small("Code on Github:"),
+            tags$small("Code is on Github"),
             br(),
             tags$a(href="https://github.com/tinu-schneider/Flatten_the_Curve", 
                    "github.com/tinu-schneider/Flatten_the_Curve"),
