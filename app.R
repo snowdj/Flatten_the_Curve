@@ -265,7 +265,9 @@ ui <- fluidPage(
            hr(),
            h4("Initial code, mathematical model and idea:"),
            tags$a(href="https://staff.math.su.se/hoehle/blog/2020/03/16/flatteningthecurve.html", 
-                  "Michael Höhle, 'Flatten the COVID-19 curve'") 
+                  "Michael Höhle, 'Flatten the COVID-19 curve'"), 
+           p(),
+           br()
         )
     )
 )
