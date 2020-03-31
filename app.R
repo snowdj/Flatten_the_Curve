@@ -7,7 +7,7 @@ library(deSolve)
 
 
 ## Configuration
-options(theme_set(theme_minimal(base_size = 15)))
+theme_set(theme_minimal(base_size = 18))
 
 
 # Function to compute the derivative of the ODE system
